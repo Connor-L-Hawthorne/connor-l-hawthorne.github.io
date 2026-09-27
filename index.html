@@ -317,7 +317,17 @@ const CHARS=[
            bgSpeed:.9,bgScale:1,bgDirX:.82,bgDirY:.57,bgBands:1,...o}));
 const SEC=128,CH=16,LOOK=1.1;                       
 const START=0;
-const chr=s=>CHARS[(START+tm(s>>1)+2*tm(s>>2)+3*tm(s>>3)+(s>>4))%CHARS.length];
+const ORDER=(()=>{
+  const a=CHARS.map((_,i)=>i);
+  for(let i=a.length-1;i>0;i--){
+    const j=Math.floor(Math.random()*(i+1));
+    [a[i],a[j]]=[a[j],a[i]];
+  }
+  const k=a.indexOf(0);    
+  [a[0],a[k]]=[a[k],a[0]];
+  return a;
+})();
+const chr=s=>CHARS[ORDER[(tm(s>>1)+2*tm(s>>2)+3*tm(s>>3)+(s>>4))%CHARS.length]];
 const blend=(p,k)=>{const s=Math.floor(p/SEC),u=(p%SEC)/SEC,a=chr(s)[k];return a+(chr(s+1)[k]-a)*smooth((u-.5)/.5)};
 const chAt=p=>{const s=Math.floor(p/SEC),u=(p%SEC)/SEC;return chr(u>.75?s+1:s)};
 const curInst=p=>chAt(p).inst;
