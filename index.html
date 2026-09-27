@@ -114,7 +114,7 @@ button.ghost:hover{background:none;border-color:var(--dim);color:var(--fg)}
     <p></p>
     <h3>The music</h3>
     <p>The music is fully randomly generated, using a technique known as fractal music.</p>
-    <p>Essentially, fractal patterns such as the Nørgård infinity series and Thue-Morse binary series are projected onto a map of chords to create a harmonic context, which selects a scale on which a second sample of a fractal can be projected to create melody. Rythym is created much the same way.</p>
+    <p>Essentially, fractal patterns such as the Nørgård infinity series and Thue-Morse binary series are projected onto a map of chords to create a harmonic context, which selects a scale on which a second sample of a fractal can be projected to create melody. Rhythm is created much the same way.</p>
     <p>The music is split into 11 different styles. Transitions between the styles is handled by fairly simple blending.</p>
     <p>The first style is desolate. This style is extremely open and sparse. A lush pad scores chords over D dorian, while a trumpet-inspired lead plays occasional melodic ideas.</p>
     <p>The second style is petrachor. A pad similar to desolate is present, but the melody is replaced by a smooth lead and pipe bells. This style was inspired by minimalist composer Arvo Pärt.</p>
@@ -353,7 +353,7 @@ function initAudio(){
   dlIn=ac.createGain();dlIn.connect(dl);dl.connect(lp);lp.connect(fb);fb.connect(dl);lp.connect(master);lp.connect(rvIn);
   nb=ac.createBuffer(1,ac.sampleRate,ac.sampleRate);
   const nd=nb.getChannelData(0);for(let i=0;i<nd.length;i++)nd[i]=Math.random()*2-1;
-  ac.resume();
+  ac.resume().catch(()=>{});
 }
 function route(n,pan=0,rv=.3,dly=.1){
   const p=ac.createStereoPanner();p.pan.value=pan;n.connect(p);p.connect(master);
@@ -653,7 +653,7 @@ function startMusic(){
 function toggleMusic(){
   if(!ac)return false;
   if(ac.state==='running'){ac.suspend();return false}
-  ac.resume();return true;
+  ac.resume().catch(()=>{});return true;ac.resume().catch(()=>{});
 }
 </script>
 <script>
@@ -663,7 +663,11 @@ function showHud(){
   $('intro').style.display='none';
   $('hud').style.display='flex';
 }
-$('go').onclick=()=>{startMusic();$('pause').textContent='Pause';showHud()};
+$('go').onclick=()=>{
+  try{ startMusic(); $('pause').textContent='Pause'; }
+  catch(e){ console.error('Audio unavailable:',e); $('mode').textContent='sound unavailable in this browser'; $('pause').style.display='none'; }
+  showHud();
+};
 
 $('skip').onclick=()=>{
   $('mode').textContent='sound off';
@@ -671,8 +675,14 @@ $('skip').onclick=()=>{
   showHud();
 };
 $('pause').onclick=()=>{
-  if(!ac){startMusic();$('pause').textContent='Pause';return}
-  $('pause').textContent=toggleMusic()?'Pause':'Resume';
+  try{
+    if(!ac){ startMusic(); $('pause').textContent='Pause'; return; }
+    $('pause').textContent=toggleMusic()?'Pause':'Resume';
+  }catch(e){
+    console.error('Audio unavailable:',e);
+    $('mode').textContent='sound unavailable in this browser';
+    $('pause').style.display='none';
+  }
 };
 
 let lastChord='';
