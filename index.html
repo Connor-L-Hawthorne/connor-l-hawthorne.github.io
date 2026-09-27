@@ -21,8 +21,9 @@ body{margin:0;background:var(--bg);color:var(--fg);font:400 15px/1.55 "DM Sans",
 }
 img { max-width: min(400px, 50%); height: auto; display: block; }
 #nav{
+  display:none;
   position:fixed;top:0;left:0;right:0;z-index:9000;
-  display:flex;justify-content:center;flex-wrap:wrap;gap:8px;
+  justify-content:center;flex-wrap:wrap;gap:8px;
   padding:calc(env(safe-area-inset-top,0px) + 14px) 16px 14px;
   pointer-events:none;
 }
@@ -341,7 +342,11 @@ const ev=(t,m,l)=>events.push({t,m,l});
 
 let master,rvIn,rvOut,dl,dlIn,nb;
 function initAudio(){
-  ac=new (window.AudioContext||window.webkitAudioContext)();
+  if (navigator.audioSession) {
+    try { navigator.audioSession.type = 'playback'; } catch (e) {}
+  }
+  ac = new (window.AudioContext || window.webkitAudioContext)();
+  if (ac.state !== 'running') ac.resume();
   const comp=ac.createDynamicsCompressor();comp.threshold.value=-20;comp.ratio.value=3;
   master=ac.createGain();master.gain.value=.85;master.connect(comp);comp.connect(ac.destination);
   const len=ac.sampleRate*5,ir=ac.createBuffer(2,len,ac.sampleRate);
@@ -662,6 +667,7 @@ const $=id=>document.getElementById(id);
 function showHud(){
   $('intro').style.display='none';
   $('hud').style.display='flex';
+   $('nav').style.display = 'flex'; 
 }
 $('go').onclick=()=>{
   try{ startMusic(); $('pause').textContent='Pause'; }
