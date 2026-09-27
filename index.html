@@ -353,6 +353,7 @@ function initAudio(){
   dlIn=ac.createGain();dlIn.connect(dl);dl.connect(lp);lp.connect(fb);fb.connect(dl);lp.connect(master);lp.connect(rvIn);
   nb=ac.createBuffer(1,ac.sampleRate,ac.sampleRate);
   const nd=nb.getChannelData(0);for(let i=0;i<nd.length;i++)nd[i]=Math.random()*2-1;
+  ac.resume();
 }
 function route(n,pan=0,rv=.3,dly=.1){
   const p=ac.createStereoPanner();p.pan.value=pan;n.connect(p);p.connect(master);
