@@ -104,12 +104,29 @@ button.ghost:hover{background:none;border-color:var(--dim);color:var(--fg)}
   <canvas id="bg"></canvas>
   <div id="panels" hidden>
   <button id="panelClose">Close</button>
+  <section class="panel" id="panel-personal" hidden>
+    <h2>Personal Corner</h2>
+    <h3>What I'm reading:</h3>
+    <p>Discipline and Punish: The Birth of the Prison, by Michel Foucault(1975).</p>
+    <p>Blood Meridian: Or, Evening Redness on the West, by Cormac McCarthy(1985)</p>
+    <p>Materialism and Empirio-Criticism, by Vladimir Lenin(1909)</p>
+    <p>Birding to Change the World: A Memoir, by Trish O'Kane(2024)</p>
+    <h3>Album of the Month:</h3>
+    <p>All the light in the word, by Colin Stetson & Brighde Chaimbeul(2026).</p>
+  </section>
   <section class="panel" id="panel-about" hidden>
     <h2>About Connor Hawthorne</h2>
     <p>Connor L. Hawthorne is a first-year student at the University of Montana, attending for a dual major in computer science and political science. He is interested in the ways governments and regimes respond to new developments in technology. In his free time, he enjoys playing music, hiking, and stargazing. He was born and raised in Livingston, Montana, and graduated as validictorian from Park High School.</p>
     <img src="headshot.png" alt="Connor Hawthorne, dressed in a gray suit with a purple undershirt." width="1504" height="2315" style="border: 5px solid black;">
   </section>
-
+  <section class="panel" id="panel-projects" hidden>
+    <h2>Ongoing Projects</h2>
+    <h3>P.E.N.U.M.B.R.A. Engine</h3>
+    <p>The P.E.N.U.M.B.R.A.(Path-traced Emissive-lighted Noise-Reduced Unified-Window Multi-threaded BVH-Accelerated Raytraced Adaptive) Engine is a bespoke game engine, designed specifically for low-fi games set in space.
+      It is written in the C++ language, using a library known as SDL to gain access to graphics and user input. It is still in early development, but has already shown promise due to a unique visual style. Below is a screenshot of a simple satellite model, rendered in 1.316 milliseconds.
+    </p>
+    <img src="penumbra.png" alt="A 64 pixel by 64 pixel screenshot of a satellite, with solar panels and a radio dish." width="1111" height="1122" style="border:5px solid purple">
+  </section>
   <section class="panel" id="panel-music" hidden>
     <h2>About the website</h2>
     <p></p>
@@ -235,6 +252,8 @@ Gnorptastic wizzlebop florn — the end, probably, unless the trundlewort disagr
   <button data-panel="panel-music">About The Website</button>
   <button data-panel="panel-contact">Contact</button>
   <button data-panel="panel-work">Selected Works</button>
+  <button data-panel="panel-projects">Ongoing Projects</button>
+  <button data-panel="panel-personal">Personal Corner</button>
 </nav>
 <div id="hud">
   <div id="chord">&nbsp;</div>
